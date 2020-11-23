@@ -19,8 +19,8 @@ app.use(
       origin: [ 'https://mvpnote-frontend.herokuapp.com','https://mvpnote-frontend.herokuapp.com/','http://mvpnote-frontend.herokuapp.com/'],
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
       'Access-Control-Allow-Header':
-            'Origin, X-Requested-With, Content-Type, Accept',
-      credentials: true
+      'Origin, X-Requested-With, Content-Type, Accept',
+      
   })
 );
 
