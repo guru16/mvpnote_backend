@@ -14,16 +14,16 @@ require('dotenv').config()
 
 var app = express();
 
-// app.use(
-//   cors({
-//       origin: [ 'https://mvpnote-frontend.herokuapp.com/','http://mvpnote-frontend.herokuapp.com/'],
-//       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-//       'Access-Control-Allow-Header':
-//             'Origin, X-Requested-With, Content-Type, Accept',
-//       credentials: true
-//   })
-// );
-app.use(cors());
+app.use(
+  cors({
+      origin: [ 'https://mvpnote-frontend.herokuapp.com','https://mvpnote-frontend.herokuapp.com/','http://mvpnote-frontend.herokuapp.com/'],
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      'Access-Control-Allow-Header':
+            'Origin, X-Requested-With, Content-Type, Accept',
+      credentials: true
+  })
+);
+
 
 
 // view engine setup
