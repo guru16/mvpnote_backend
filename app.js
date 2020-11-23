@@ -16,7 +16,7 @@ var app = express();
 
 app.use(
   cors({
-      origin: ['http://localhost:4200', 'http://192.168.1.246:4200'],
+      origin: ['http://localhost:4200', 'http://mvpnote-frontend.herokuapp.com/'],
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
       'Access-Control-Allow-Header':
             'Origin, X-Requested-With, Content-Type, Accept',
