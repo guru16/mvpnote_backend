@@ -191,9 +191,11 @@ async createSubject(req){
                 let finalResult= await subject.save()
                 if(finalResult){
                     let notesData=await notesModal.find({subjectId: ObjectId(subjectId)})
-                    if(notesData>0){
+                    console.log("notesData",notesData)
+                    if(notesData.length>0){
                         let notes=await notesModal.updateMany({subjectId: ObjectId(subjectId)}, {$set: {isDeleted: true}})
-                         if(notes.nModified>0){
+                        console.log("xyz",notes)
+                        if(notes.nModified>0){
                               return ({ status: 200, message: 'subject deleted successfully', success: true, data: '' });
       
                           }else{
@@ -269,7 +271,7 @@ async createSubject(req){
                 if(finalResult){
                    let notes=await notesModal.updateMany({subjectId: ObjectId(req.body.subjectId)}, {$set: {isDeleted: false}})
                     if(notes.nModified>0){
-                        return ({ status: 200, message: 'subject deleted successfully', success: true, data: '' });
+                        return ({ status: 200, message: 'subject restore successfully', success: true, data: '' });
 
                     }else{
                         return ({ status: 400, message: 'something goes wrong', success: false, data: '' });
@@ -340,7 +342,8 @@ async createSubject(req){
                var subjectIdArray = [];
                result.map(subject => subjectIdArray.push(subject._id.toString()));
                const individualNotes= result1.filter(et => et.subjectId == null );                
-                const notes= result1.filter(et => et.subjectId && subjectIdArray.includes(et.subjectId.toString()));
+                const notes= result1.filter(et => et.subjectId && !subjectIdArray.includes(et.subjectId.toString()));
+                console.log("notes",notes)
                 const allNotes = [...result, ...individualNotes, ...notes];
                 return ({ status: 200, message: 'deleted data', success: true, data: allNotes });
             }

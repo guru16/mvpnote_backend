@@ -268,4 +268,17 @@ router.get('/getDeletedData',authMiddleware.authenticateJWT,function(req,res,nex
   })
 })
 
+router.post('/restoreSubject',authMiddleware.authenticateJWT,function(req,res,next){
+  console.log(req.body)
+  return notesController.restoreSubject(req)
+  .then((resp)=>{
+    res.send(resp);
+
+  }).catch(err=>{
+    res.status(500).send(err)
+
+  })
+
+})
+
 module.exports = router;
