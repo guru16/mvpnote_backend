@@ -27,7 +27,9 @@ class userController{
                  return resolve({  message: 'Email already exsist', success: false, data: {} });
                 }else{
                     users.email=registerData.email;
-                    users.userName=registerData.name
+                    users.firstName=registerData.firstName
+                    users.lastName=registerData.lastName
+
                     users.setPassword(registerData.password);
                      users.save(async (err, resp) => {
                          console.log("users",users)
