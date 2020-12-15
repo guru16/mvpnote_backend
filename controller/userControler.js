@@ -1,8 +1,12 @@
 const mongoose = require('mongoose');
 const Users = require('../models/userModel');
+const Admin = require('../models/adminModel');
+
 const auth = require('../auth/jwt');
 const template = require('../services/mail/mailTemplates');
 const userModel = mongoose.model('Users');
+const adminModel = mongoose.model('Admin');
+
 const multer = require('multer');
 const storage = require('../config/multerConfig');
 require("dotenv").config();
@@ -17,6 +21,35 @@ var singleUpload = multer({ storage: storage.storage }).single('file'); // for s
 
 
 class userController{
+
+    async createAdmin(req){
+        return new Promise(function(resolve, reject) { 
+        const registerData = req.body;
+            if (registerData.email !== undefined && registerData.email !== ''){
+                let admin = new adminModel();
+                return adminModel.find({email:registerData.email}).then(resp => {
+                if(resp.length>0){
+                 return resolve({  message: 'Email already exsist', success: false, data: {} });
+                }else{
+                    admin.email=registerData.email;
+                    admin.firstName=registerData.firstName
+                    admin.lastName=registerData.lastName
+                    admin.setPassword(registerData.password);
+                    admin.save(async (err, resp) => {
+                        let token =   await auth.signJWT({ uid: resp._id, t: 'ADMIN'});
+                        admin.token=token;
+                            return admin.save()
+                                .then(adminSaved =>{
+                                    return resolve ({ status: 200, success: true, data: adminSaved, token: token });
+
+                                });
+                    })
+                }
+            })
+
+            }else {throw 'invalid email';}
+        })
+    }
     async register(req){
         return new Promise(function(resolve, reject) { 
         const registerData = req.body;
@@ -51,6 +84,37 @@ class userController{
 
         }else {throw 'invalid email';}
     })
+    }
+
+    async adminLogin(req){
+        let loginData=req.body
+        if (loginData.email !== undefined && loginData.email !== '' && loginData.password !== undefined && loginData.password !== ''){
+            let admin = await adminModel.findOne({email:loginData.email});
+            console.log(loginData.email,admin)
+            if(admin){
+                let validPassword = await admin.validatePassword(loginData.password,admin.hash);
+                console.log(validPassword)
+                if(validPassword){
+                    let token = await auth.signJWT({ uid: admin._id, t: 'ADMIN'});
+                    admin.token=token;
+                    return admin.save()
+                    .then(adminSaved =>{
+                        return  ({ status: 200, success: true, data: adminSaved, token: token });
+
+                    });
+
+                }else{
+                    return ({ status: 200, message: 'Invalid Password', success: false, data: {} });
+                }
+            }else
+            {
+                return({ status: 400, message: 'Invalid Email', success: false, data: {} });
+            }
+        }
+        else{
+           return({  status: 400, message: 'not valid'});
+
+        }
     }
 
     async login(req ){

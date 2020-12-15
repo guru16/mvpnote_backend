@@ -21,6 +21,28 @@ router.post('/register', function(req, res, next) {
   })
 });
 
+router.post('/createAdmin', function(req, res, next) {
+  console.log(req.body)
+  return userController.createAdmin(req)
+  .then((resp) => {
+    res.send(resp);
+  })
+  .catch(err=>{
+    res.status(500).send(err)
+
+  })
+});
+router.post('/adminLogin', function(req, res, next) {
+  userController.adminLogin(req)
+ .then((resp) => {
+   res.send(resp);
+ })
+ .catch(err=>{
+   res.status(500).send(err)
+
+ })
+});
+
 router.post('/login', function(req, res, next) {
    userController.login(req)
   .then((resp) => {
