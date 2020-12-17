@@ -17,7 +17,7 @@ var app = express();
 
 app.use(
   cors({
-      origin: ['http://mvpnotes-backend.herokuapp.com', 'https://mvpnote-frontend.herokuapp.com','https://mvpnote-frontend.herokuapp.com/','http://mvpnote-frontend.herokuapp.com','https://mvpnotes-backend.herokuapp.com'],
+      origin: ['http://mvpnotes-backend.herokuapp.com','https://mvp-admin.herokuapp.com/','https://mvpnote-frontend.herokuapp.com','https://mvpnote-frontend.herokuapp.com/','http://mvpnote-frontend.herokuapp.com','https://mvpnotes-backend.herokuapp.com'],
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
       'Access-Control-Allow-Header':
       'Origin, X-Requested-With, Content-Type, Accept',
